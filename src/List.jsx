@@ -1,75 +1,34 @@
-import { For, createSignal } from 'solid-js';
+import { For, Show } from 'solid-js';
 import { dndzone } from 'solid-dnd-directive';
+
+import { handleCardDndEvent, state } from './store/kanbanStore';
+
+import { NewCard } from './NewCard';
 
 import { Card } from './Card';
 
-export function List({ listTitle }) {
-  const [items, setItems] = createSignal([
-    { id: 0, title: 'Item 1', description: 'foobar' },
-    { id: 1, title: 'Item 2', description: 'foobar' },
-    { id: 2, title: 'Item 3', description: 'foobar' },
-    { id: 3, title: 'Item 4', description: 'foobar' },
-  ]);
+export function List({ list }) {
 
-  const [title, setTitle] = createSignal('');
-  const [description, setDescription] = createSignal('');
-
-  function handleDndEvent(e) {
-    const { items: newItems } = e.detail;
-    setItems(newItems);
-  }
-
-  function handleSubmit(e) {
-    e.preventDefault();
-
-    if (!title() || !description()) {
-      return;
-    }
-
-    setItems((items) => [
-      ...items,
-      {
-        id: items.length,
-        title: title().trim(),
-        description: description().trim(),
-      },
-    ]);
-
-    setTitle('');
-    setDescription('');
-  }
+  const filterCards = (item) => (!(state.filter.length > 0) || item.tags.some((tag) => (state.filter.includes(tag))))
 
   return (
-    <div class="bg-gray-100 w-96 py-4 px-2 rounded">
-      <h2 class="text-2xl font-semibold text-center">{listTitle}</h2>
+    <div class="bg-gray-100 w-80 py-4 px-2 rounded">
+      <h2 class="text-2xl font-semibold text-center">{list.title}</h2>
+      <Show when={list.title === 'Backlog'}>
+        <NewCard listId={list.id} />
+      </Show>
       <div
         className="flex flex-col space-y-4 mt-4"
-        use:dndzone={{ items }}
-        on:consider={handleDndEvent}
-        on:finalize={handleDndEvent}
+        use:dndzone={{
+          items: () => list.cards.filter(filterCards),
+          dropTargetClasses: ['min-h-32', 'bg-gray-200', 'outline-none'],
+          dropTargetStyle: {}
+        }}
+        on:consider={(e) => handleCardDndEvent(e, list.id)}
+        on:finalize={(e) => handleCardDndEvent(e, list.id)}
       >
-        <For each={items()}>{(item, _) => <Card item={item} />}</For>
+        <For each={list.cards.filter(filterCards)}>{(item, _) => <Card item={item} />}</For>
       </div>
-
-      <div className="rounded p-4 bg-white mt-4">
-        <form onSubmit={(e) => handleSubmit(e)}>
-          <input
-            type="text"
-            class="text-xl font-semibold"
-            placeholder="Title"
-            value={title()}
-            onInput={(e) => setTitle(e.currentTarget.value)}
-          />
-          <input
-            type="text"
-            class="text-gray-500 text-sm"
-            placeholder="Description"
-            value={description()}
-            onInput={(e) => setDescription(e.currentTarget.value)}
-          />
-          <input type="submit" hidden />
-        </form>
-      </div>
-    </div>
+    </div >
   );
 }
