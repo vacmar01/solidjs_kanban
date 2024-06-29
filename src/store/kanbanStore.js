@@ -1,6 +1,4 @@
-import { createStore, produce } from "solid-js/store";
-
-import { createEffect } from "solid-js";
+import { createStore } from "solid-js/store";
 
 if (!localStorage.getItem("kanban")) {
     localStorage.setItem("kanban", JSON.stringify({
@@ -64,6 +62,17 @@ export function addNewCard(title, description, tags, listId) {
     });
 }
 
+export function deleteCard(cardId) {
+    setState("lists", (currentLists) => {
+        return currentLists.map((list) => {
+            return {
+                ...list,
+                cards: list.cards.filter((card) => card.id !== cardId)
+            }
+        });
+    });
+}
+
 export function toggleTagToFilter(tag) {
     setState("filter", (currentFilter) => {
         if (currentFilter.includes(tag)) {
@@ -73,17 +82,8 @@ export function toggleTagToFilter(tag) {
     });
 }
 
-export const filteredLists = () => {
-    if (state.filter.length === 0) return state.lists;
-
-    return state.lists.map((list) => {
-        return {
-            ...list,
-            cards: list.cards.filter((card) => {
-                return card.tags.some((tag) => state.filter.includes(tag));
-            })
-        }
-    })
+export function resetFilters() {
+    setState("filter", []);
 }
 
 export function handleCardDndEvent(e, listId) {

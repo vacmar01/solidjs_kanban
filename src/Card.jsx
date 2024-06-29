@@ -1,6 +1,9 @@
 import { For, Show, createSignal } from "solid-js";
 
-import { addNewTag, state } from "./store/kanbanStore";
+import { Icon } from "solid-heroicons";
+import { trash } from "solid-heroicons/outline";
+
+import { addNewTag, deleteCard } from "./store/kanbanStore";
 
 export function Card({ item }) {
   const [addTag, setAddTag] = createSignal(false);
@@ -8,7 +11,10 @@ export function Card({ item }) {
   const [newTag, setNewTag] = createSignal('');
 
   return (
-    <div class="p-4 bg-white rounded">
+    <div class="p-4 bg-white rounded relative">
+      <button class="absolute top-2 right-2 font-semibold text-gray-600" onClick={() => deleteCard(item.id)}>
+        <Icon path={trash} class="w-4 h-4" />
+      </button>
       <h3 class="text-xl font-semibold">{item.title}</h3>
       <p class="text-gray-500 text">{item.description}</p>
       <div class="flex flex-row space-x-1 mt-4">

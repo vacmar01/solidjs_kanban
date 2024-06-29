@@ -13,7 +13,7 @@ export function NewCard({ listId }) {
             <form onSubmit={(e) => {
                 e.preventDefault()
 
-                if (!title() || !description() || !tags()) return
+                if (!title()) return
                 addNewCard(title(), description(), tags(), listId)
                 setTitle('')
                 setDescription('')

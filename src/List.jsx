@@ -1,4 +1,4 @@
-import { For, Show } from 'solid-js';
+import { For, Show, createEffect } from 'solid-js';
 import { dndzone } from 'solid-dnd-directive';
 
 import { handleCardDndEvent, state } from './store/kanbanStore';
@@ -20,9 +20,9 @@ export function List({ list }) {
       <div
         className="flex flex-col space-y-4 mt-4"
         use:dndzone={{
-          items: () => list.cards.filter(filterCards),
-          dropTargetClasses: ['min-h-32', 'bg-gray-200', 'outline-none'],
-          dropTargetStyle: {}
+          items: () => list.cards,
+          dropTargetClasses: ['min-h-32', 'bg-gray-200', 'outline-none', 'rounded'],
+          dropTargetStyle: {},
         }}
         on:consider={(e) => handleCardDndEvent(e, list.id)}
         on:finalize={(e) => handleCardDndEvent(e, list.id)}
