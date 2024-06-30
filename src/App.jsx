@@ -1,6 +1,6 @@
 import { For, createEffect } from 'solid-js';
 
-import { state } from './store/kanbanStore';
+import { state, writeState } from './store/kanbanStore';
 
 import { List } from './List';
 
@@ -9,8 +9,9 @@ import { Filters } from './Filters';
 function App() {
 
   //save to local storage
-  createEffect(() => {
-    localStorage.setItem("kanban", JSON.stringify(state));
+  createEffect(async () => {
+    await writeState();
+    console.log('state updated');
   });
 
   return (

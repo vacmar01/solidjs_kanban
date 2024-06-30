@@ -1,19 +1,39 @@
 import { createStore } from "solid-js/store";
 
-if (!localStorage.getItem("kanban")) {
-    localStorage.setItem("kanban", JSON.stringify({
-        filter: [],
-        lists: [
-            { id: 0, title: "Backlog", cards: [] },
-            { id: 1, title: "In Progress", cards: [] },
-            { id: 2, title: "Waiting", cards: [] },
-            { id: 3, title: "Done", cards: [] }]
-    }));
-}
+const pb_url = import.meta.env.VITE_POCKETBASE_URL
 
-const initialState = JSON.parse(localStorage.getItem("kanban"));
+import PocketBase from 'pocketbase';
+
+const pb = new PocketBase(pb_url);
+
+console.log(pb_url)
+
+// if (!localStorage.getItem("kanban")) {
+//     localStorage.setItem("kanban", JSON.stringify({
+//         filter: [],
+//         lists: [
+//             { id: 0, title: "Backlog", cards: [] },
+//             { id: 1, title: "In Progress", cards: [] },
+//             { id: 2, title: "Waiting", cards: [] },
+//             { id: 3, title: "Done", cards: [] }]
+//     }));
+// }
+
+const records = await pb.collection('state').getFullList({
+    sort: '-created',
+});
+
+const initialState = records[0].state;
 
 export const [state, setState] = createStore(initialState);
+
+export async function writeState() {
+    try {
+        await pb.collection('state').update(records[0].id, { state });
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 export function addNewTag(tag, cardId) {
 
@@ -32,7 +52,7 @@ export function addNewTag(tag, cardId) {
                 ...list,
                 cards: list.cards.map((card) => {
                     if (card.id === cardId) {
-                        return { ...card, tags: [...card.tags, tag] }
+                        return { ...card, tags: [...card.tags, tag.trim().toLowerCase()] }
                     }
                     return card;
                 })
@@ -43,7 +63,7 @@ export function addNewTag(tag, cardId) {
 
 export function addNewCard(title, description, tags, listId) {
 
-    const tagsArray = tags.split(',').map((tag) => tag.trim());
+    const tagsArray = tags.split(',').map((tag) => tag.trim().toLowerCase());
 
     const newCard = {
         id: Date.now(),

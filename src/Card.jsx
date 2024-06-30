@@ -1,7 +1,7 @@
 import { For, Show, createSignal } from "solid-js";
 
 import { Icon } from "solid-heroicons";
-import { trash } from "solid-heroicons/outline";
+import { trash, plusCircle } from "solid-heroicons/outline";
 
 import { addNewTag, deleteCard } from "./store/kanbanStore";
 
@@ -17,13 +17,15 @@ export function Card({ item }) {
       </button>
       <h3 class="text-xl font-semibold">{item.title}</h3>
       <p class="text-gray-500 text">{item.description}</p>
-      <div class="flex flex-row space-x-1 mt-4">
+      <div class="flex flex-row space-x-1 space-y-1 mt-4 items-center flex-wrap">
         <For each={item.tags}>
           {(tag) => (
-            <span class="rounded-full px-2 py-1 text-xs bg-gray-200">{tag}</span>
+            <div class="rounded-full px-2 py-1 text-xs font-semibold bg-gray-200">{tag}</div>
           )}
         </For>
-        <span className="rounded-full px-2 py-1 text-xs bg-gray-400 text-white cursor-pointer" onClick={() => setAddTag(true)}>+</span>
+        <div className="cursor-pointer" onClick={() => setAddTag(true)}>
+          <Icon path={plusCircle} class="w-6 h-6" />
+        </div>
         <Show when={addTag()}>
           <div class="flex flex-row space-x-1">
             <form onSubmit={(e) => {
