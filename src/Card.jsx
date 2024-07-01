@@ -17,7 +17,7 @@ export function Card({ item }) {
       </button>
       <h3 class="text-xl font-semibold">{item.title}</h3>
       <p class="text-gray-500 text">{item.description}</p>
-      <div class="flex flex-row space-x-1 space-y-1 mt-4 items-center flex-wrap">
+      <div class="flex flex-row gap-2 mt-4 items-center flex-wrap">
         <For each={item.tags}>
           {(tag) => (
             <div class="rounded-full px-2 py-1 text-xs font-semibold bg-gray-200">{tag}</div>

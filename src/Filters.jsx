@@ -8,13 +8,13 @@ export function Filters() {
             return list.cards.map((card) => card.tags).flat();
         }).flat();
 
-        return [...new Set(tags)];
+        return [...new Set(tags.sort())];
     }
 
     return (
         <div class="p-4 text-center">
             <h2 class="text-xl font-semibold">Filter by Tags</h2>
-            <div class="mt-4 space-x-2 flex flex-row items-center flex-wrap justify-center">
+            <div class="mt-4 gap-2 flex flex-row items-center flex-wrap justify-center">
                 <span onClick={resetFilters}
                     class="rounded-full px-2 py-1 bg-gray-800 text-white cursor-pointer"
                 >

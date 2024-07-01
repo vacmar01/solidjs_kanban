@@ -6,8 +6,6 @@ import PocketBase from 'pocketbase';
 
 const pb = new PocketBase(pb_url);
 
-console.log(pb_url)
-
 // if (!localStorage.getItem("kanban")) {
 //     localStorage.setItem("kanban", JSON.stringify({
 //         filter: [],

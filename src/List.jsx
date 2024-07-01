@@ -12,7 +12,7 @@ export function List({ list }) {
   const filterCards = (item) => (!(state.filter.length > 0) || item.tags.some((tag) => (state.filter.includes(tag))))
 
   return (
-    <div class="bg-gray-100 w-80 py-4 px-2 rounded">
+    <div class="bg-gray-100 w-80 py-4 px-2 rounded shrink-0">
       <h2 class="text-2xl font-semibold text-center">{list.title}</h2>
       <Show when={list.title === 'Backlog'}>
         <NewCard listId={list.id} />

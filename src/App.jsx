@@ -17,7 +17,7 @@ function App() {
   return (
     <div class="max-w-[1400px] mx-auto">
       <Filters />
-      <div class="flex flex-row space-x-4 p-2">
+      <div class="flex flex-row space-x-4 p-2  overflow-auto">
         <For each={state.lists}>
           {(list) => <List list={list} />}
         </For>
