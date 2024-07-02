@@ -1,10 +1,6 @@
 import { createStore } from "solid-js/store";
 
-const pb_url = import.meta.env.VITE_POCKETBASE_URL
-
-import PocketBase from 'pocketbase';
-
-const pb = new PocketBase(pb_url);
+import { pb } from './pocketbaseStore';
 
 // if (!localStorage.getItem("kanban")) {
 //     localStorage.setItem("kanban", JSON.stringify({
@@ -17,13 +13,19 @@ const pb = new PocketBase(pb_url);
 //     }));
 // }
 
-const records = await pb.collection('state').getFullList({
-    sort: '-created',
-});
+export const [state, setState] = createStore({});
 
-const initialState = records[0].state;
+let records;
 
-export const [state, setState] = createStore(initialState);
+if (pb.authStore.isValid) {
+    records = await pb.collection('state').getFullList({
+        sort: '-created',
+    });
+
+    const initialState = records[0].state;
+
+    setState(initialState);
+}
 
 export async function writeState() {
     try {
