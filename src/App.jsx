@@ -1,4 +1,4 @@
-import { For, createEffect } from 'solid-js';
+import { For, Show, createEffect, createSignal } from 'solid-js';
 
 import { state, writeState } from './store/kanbanStore';
 
@@ -8,10 +8,9 @@ import { Icon } from 'solid-heroicons';
 import { noSymbol } from 'solid-heroicons/outline';
 
 import { List } from './List';
-
 import { Filters } from './Filters';
-
 import { Navbar } from './Navbar';
+import { SlideOutMenu } from './SlideOutMenu';
 
 function PleaseLogIn() {
   return (
@@ -24,6 +23,16 @@ function PleaseLogIn() {
 
 function App() {
 
+  const [showMenu, setShowMenu] = createSignal(false);
+
+  function closeMenu() {
+    setShowMenu(false);
+  }
+
+  function showSlideMenu() {
+    setShowMenu(true);
+  }
+
   //save to local storage
   createEffect(async () => {
     await writeState();
@@ -31,8 +40,11 @@ function App() {
   });
 
   return (
-    <>
-      <Navbar />
+    <div class="relative">
+      <Show when={showMenu()}>
+        <SlideOutMenu closeMenu={closeMenu} />
+      </Show>
+      <Navbar showMenu={showSlideMenu} />
       <div class="max-w-[1400px] mx-auto">
         <Show when={pb.authStore.isValid} fallback={<PleaseLogIn />}>
           <Filters />
@@ -43,7 +55,7 @@ function App() {
           </div>
         </Show>
       </div>
-    </>
+    </div>
   );
 }
 

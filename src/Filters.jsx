@@ -12,7 +12,7 @@ export function Filters() {
     }
 
     return (
-        <div class="p-4 text-center max-w-[1328px] mx-auto">
+        <div class="px-4 py-8 text-center max-w-[650px] mx-auto">
             <h2 class="text-xl font-semibold">Filter by Tags</h2>
             <div class="mt-4 gap-2 flex flex-row items-center flex-wrap justify-center">
                 <span onClick={resetFilters}

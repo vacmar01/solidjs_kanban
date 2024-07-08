@@ -82,6 +82,22 @@ export function addNewCard(title, description, tags, listId) {
     });
 }
 
+export function editCard(cardId, title, description) {
+    setState("lists", (currentLists) => {
+        return currentLists.map((list) => {
+            return {
+                ...list,
+                cards: list.cards.map((card) => {
+                    if (card.id === cardId) {
+                        return { ...card, title, description }
+                    }
+                    return card;
+                })
+            }
+        });
+    });
+}
+
 export function deleteCard(cardId) {
     setState("lists", (currentLists) => {
         return currentLists.map((list) => {
@@ -111,6 +127,3 @@ export function handleCardDndEvent(e, listId) {
 
     setState('lists', (list) => list.id == listId, "cards", items);
 }
-
-
-
