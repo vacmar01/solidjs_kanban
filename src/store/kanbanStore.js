@@ -2,6 +2,8 @@ import { createStore } from "solid-js/store";
 
 import { pb } from './pocketbaseStore';
 
+
+
 // if (!localStorage.getItem("kanban")) {
 //     localStorage.setItem("kanban", JSON.stringify({
 //         filter: [],
@@ -15,21 +17,10 @@ import { pb } from './pocketbaseStore';
 
 export const [state, setState] = createStore({});
 
-let records;
 
-if (pb.authStore.isValid) {
-    records = await pb.collection('state').getFullList({
-        sort: '-created',
-    });
-
-    const initialState = records[0].state;
-
-    setState(initialState);
-}
-
-export async function writeState() {
+export async function writeState(id) {
     try {
-        await pb.collection('state').update(records[0].id, { state });
+        await pb.collection('lists').update(id, { state });
     } catch (error) {
         console.log(error);
     }

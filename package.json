@@ -17,6 +17,7 @@
     "vite-plugin-solid": "^2.7.0"
   },
   "dependencies": {
+    "@solidjs/router": "^0.14.1",
     "pocketbase": "^0.21.3",
     "solid-dnd-directive": "^0.2.0",
     "solid-heroicons": "^3.2.4",

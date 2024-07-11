@@ -5,11 +5,8 @@ import { xMark } from 'solid-heroicons/outline';
 
 export function SlideOutMenu({ closeMenu }) {
     const boards = [
-        { id: 1, name: 'Board #1' },
-        { id: 2, name: 'Board #2' },
-        { id: 3, name: 'Board #3' },
-        { id: 4, name: 'Board #4' },
-        { id: 5, name: 'Board #5' },
+        { id: 1, name: 'Forschung' },
+        { id: 2, name: 'Kanban Meta' },
     ];
 
     return (
@@ -20,7 +17,7 @@ export function SlideOutMenu({ closeMenu }) {
             <div class="pt-16 pb-12 px-2">
                 <h2 class="text-2xl font-semibold">Boards</h2>
             </div>
-            <ul class="">
+            <ul>
                 <For each={boards}>
                     {(board) => (
                         <li class="text-lg py-2 text-gray-500 px-2 hover:bg-gray-200" classList={{ 'text-gray-900 bg-gray-200': board.id == 1 }}>
